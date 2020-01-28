@@ -15,7 +15,7 @@ class TunnelClient {
     const tunnel = new Socket();
     this.halfopenTunnelCount++;
     tunnel.connect({
-      host: config.host,
+      host: config.tunnelHost,
       port: config.tunnelPort
     }, () => {
       log('tunnel half-open');
@@ -25,7 +25,7 @@ class TunnelClient {
         this.halfopenTunnelCount--;
         connected = true;
         localConnection.connect({
-          host: '127.0.0.1',
+          host: config.host,
           port: config.port
         }, () => {
           log('tunnel open, piping');

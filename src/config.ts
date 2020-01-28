@@ -8,10 +8,11 @@ function env<T> (name: string, def: T, mapper: (s: string) => T) {
 
 
 const config = {
-  host: env('HOST', '127.0.0.1', String),
+  host: env('HOST', '', String),
   port: env('PORT', 8080, parseInt),
+  tunnelHost: env('TUNNEL_HOST', '', String),
   tunnelPort: env('TUNNEL_PORT', 15627, parseInt),
-  isServer: env('SERVER', false, v => !['false','no'].includes(v.toLowerCase()))
+  isServer: !process.env.TUNNEL_HOST || !process.env.HOST
 };
 
 if (process.env.NODE_ENV === 'development') {
