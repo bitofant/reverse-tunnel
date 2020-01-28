@@ -1,0 +1,38 @@
+{
+  "name": "reverse-tunnel",
+  "version": "0.1.0",
+  "description": "reverse tunnel",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "build": "tsc",
+    "dev": "npm-run-all --parallel dev:compile dev:run-server dev:run-client",
+    "dev:compile": "tsc --watch",
+    "dev:run-server": "nodemon dist/app.js",
+    "dev:run-client": "nodemon dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitofant/reverse-tunnel.git"
+  },
+  "keywords": [
+    "reverse",
+    "tunnel",
+    "proxy"
+  ],
+  "author": "bitofant",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitofant/reverse-tunnel/issues"
+  },
+  "homepage": "https://github.com/bitofant/reverse-tunnel#readme",
+  "devDependencies": {
+    "@types/node": "^13.5.0",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "standalone-logger": "^1.0.16",
+    "typescript": "^3.7.5"
+  }
+}
