@@ -17,11 +17,13 @@ class TunnelServer {
   }
 
   private onEndpointConnection (socket: Socket) {
+    const t1 = Date.now();
     log('new connection');
     this.fetchNextTunnel()
       .then(tunnel => {
         tunnel.pipe(socket);
         socket.pipe(tunnel);
+        log(`  - tunnel established after ${Date.now()-t1}ms`);
       })
       .catch(err => {
         log(err);
@@ -35,6 +37,20 @@ class TunnelServer {
       if (fn) fn (socket);
     } else {
       this.openTunnels.push(socket);
+      socket.on('error', err => {
+        log(err);
+        let index = this.openTunnels.indexOf(socket);
+        if (index >= 0) this.openTunnels.splice(index, 1);
+      });
+      setTimeout(() => {
+        let index = this.openTunnels.indexOf(socket);
+        if (index >= 0) {
+          this.openTunnels.splice(index, 1);
+          try {
+            socket.end();
+          } catch (err) {}
+        }
+      }, 120000)
     }
   }
 

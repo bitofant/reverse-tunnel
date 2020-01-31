@@ -1,6 +1,7 @@
 import config from "../config";
 import logger from 'standalone-logger';
-import { Socket, Server } from "net";
+import { Socket } from "net";
+import { writeFileSync } from "fs";
 const log = logger(module);
 
 
@@ -43,6 +44,14 @@ class TunnelClient {
           if (--this.halfopenTunnelCount <= 0) this.establishTunnel();
         }
       });
+    });
+    tunnel.on('error', err => {
+      if (process.env.KUBERNETES_SERVICE_HOST) {
+        writeFileSync('/dev/termination-log', [err.name, err.message, err.stack].join('\n'), 'utf8');
+      } else {
+        log(err);
+      }
+      process.exit(1);
     });
   }
 
